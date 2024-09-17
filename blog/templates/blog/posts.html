@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block content %}
+{% if object_list %}
+{% for post in object_list %}
+<article class="post-preview">
+    <a href="{% url 'blog:post_detail' post.id %}">
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content|truncatewords:50 }}</p>
+    </a>
+</article>
+{% endfor %}
+<ul class="pagination">
+{% for n in paginator_range %}
+    {% if page_obj.number == n %}
+        <li class="page-item active">
+            <a>{{ n }}</a>
+        </li>
+    {% else %}
+        {% if n == paginator.ELLIPSIS %}
+        <li class="page-item"><span class="page-link">{{ paginator.ELLIPSIS }}</span></li>
+        {% else %}
+        <li class="page-item"><a href="?page={{ n }}" class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>
+{% else %}
+<section class="main-empty">
+    <p>Пока нет ни одной записи.. Может пора что-нибудь написать?</p>
+    <a href="{% url 'blog:add_post' %}" class="to-post-create">
+        <img src="{% static 'blog/images/plus.png' %}" alt="Создать">
+    </a>
+</section>
+{% endif %}
+{% endblock content %}

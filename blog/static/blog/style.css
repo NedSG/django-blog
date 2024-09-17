@@ -1,0 +1,149 @@
+/* color-pallete: #F5F5F5(Grey), #48CFCB(Teal), #229799(DarkTeal), #424242(Black) */
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Comfortaa";
+  font-size: 0.9em;
+  font-weight: 700;
+  color: #424242;
+  background-color: #F5F5F5; }
+
+a {
+  text-decoration: none;
+}
+
+a:link {
+  color: #424242;
+}
+
+a:visited {
+  color: #424242;
+}
+
+.page-header {
+  background-color: #229799;
+  min-height: 50px;
+}
+
+.header-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2vw;
+  align-items: center;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header-nav .logo {
+  justify-self: start;
+  height: 5vh;
+}
+
+.logo img {
+  height: inherit;
+}
+
+.header-nav .profile-button {
+  justify-self: end;
+}
+
+.header-nav a:link {
+  color: #424242;
+}
+
+.header-nav a:visited {
+  color: #424242;
+}
+
+.header-nav a:hover {
+  color: #3ad6d1;
+}
+
+.profile-button {
+  margin: 0;
+  padding: 10px 15px 3px;
+}
+
+/* ----------MAIN--------------- */
+
+.page-main {
+  min-height: 90vh;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px;
+  border-left: grey solid 1px;
+  border-right: grey solid 1px;
+}
+
+.main-empty p {
+  margin-top: 50px;
+  text-align: center;
+}
+
+a.to-post-create {
+  display: block;
+  width: 130px;
+  margin: 0 auto;
+  padding: 15px 15px 10px 14px;
+  background-color: rgba(66, 66, 66, 0.1);
+  border: 2px solid #424242;
+  border-radius: 10%;
+}
+
+a.to-post-create > img {
+  width: 100px;
+  margin: 0;
+}
+
+a.to-post-create:hover {
+  background-color: rgba(66, 66, 66, 0.05);
+  border-color: #808080;
+}
+
+/* ----------PAGINATION----------- */
+
+ul.pagination {
+  display: flex;
+  margin: 0;
+  list-style-type: none;
+}
+
+ul.pagination a {
+  padding: 5px 10px 3px;
+  background-color: #EEE;
+}
+
+ul.pagination .page-item {
+  height: 50px;
+}
+
+ul.pagination li.active a {
+  background-color: #F1F1F1;
+}
+
+ul.pagination a:hover {
+  color: #3ad6d1;
+  background-color: #DDD;
+}
+
+ul.pagination li.active a:hover {
+  color: #424242;
+}
+
+ul.pagination .current {
+  padding: 3px 4px 0;
+  color: #888;
+  background-color: #DDD;
+  border-radius: 20%;
+}
+
+/* ----------FOOTER--------------- */
+
+.page-footer {
+  background-color: #229799;
+}
