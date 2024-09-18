@@ -1,8 +1,8 @@
 {% extends 'blog/base.html' %}
 {% block content %}
-<form method="post">
+<form method="post" class="add-post-form">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Опубликовать">
+    <input type="submit" value="Опубликовать" class="post-article-button">
 </form>
 {% endblock content %}

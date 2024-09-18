@@ -1,6 +1,10 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% block content %}
+<header class="my-posts-header">
+    <a href="{% url 'blog:add_post' %}" class="top-add-button">Создать запись</a>
+    <h1>Мои записи</h1>
+</header>
 {% if object_list %}
 {% for post in object_list %}
 <article class="post-preview">

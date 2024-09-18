@@ -21,6 +21,10 @@
             <a href="{% url 'blog:posts_list' %}" class="logo">
                 <img src="{% static 'blog/images/logo.png' %}" alt="Логотип">
             </a>
+            <ul>
+                <li><a href="">Лента</a></li>
+                <li><a href="{% url 'blog:posts_list' %}">Мои записи</a></li>
+            </ul>
             <a href="{% url 'blog:posts_list' %}" class="profile-button">Профиль</a>
         </nav>
         {% endblock header %}
