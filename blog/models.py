@@ -2,7 +2,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
+from django.utils import timezone, dateformat
+from datetime import timedelta
+from django.template.defaultfilters import timesince
 
 
 class Posts(models.Model):
@@ -24,6 +26,18 @@ class Posts(models.Model):
 
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={'pk': self.pk})
+
+    def timesince(self):
+        diff = timezone.now() - self.date_created
+        format = ''
+        if diff < timedelta(days=365):
+            if diff > timedelta(days=7):
+                format = 'd M в H:i'
+            else:
+                return timesince(self.date_created, timezone.now()).split(',')[0] + ' назад'
+        else:
+            format = 'd E Y'
+        return dateformat.format(self.date_created, format)
 
 #    def clean(self):
 #        if self.status == 'draft' and self.pub_date is not None:

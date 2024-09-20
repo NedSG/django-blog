@@ -1,4 +1,7 @@
 /* color-pallete: #F5F5F5(Grey), #48CFCB(Teal), #229799(DarkTeal), #424242(Black) */
+
+/* -------- GENERAL OPTIONS ------------ */
+
 *, *::after, *::before {
   box-sizing: border-box;
 }
@@ -28,6 +31,18 @@ ul {
   list-style-type: none;
   margin: 0;
 }
+
+.button {
+  padding: 10px 15px;
+  background-color: #48CFCB;
+  border-radius: 10px;
+}
+
+.date {
+  color: #BBB !important;
+}
+
+/* -----------MAIN HEADER ------------ */
 
 .page-header {
   background-color: #229799;
@@ -137,9 +152,13 @@ a.top-add-button {
 
 .my-posts-header h1 {
   margin: 0;
+  padding-top: 15px;
+  padding-left: 30px;
 }
 
 .post-preview {
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   margin-bottom: 20px;
   border-top: 2px solid #999;
@@ -155,14 +174,26 @@ a.top-add-button {
   border-radius: 15px;
 }
 
-.post-preview a {
-  display: flex;
-  flex-direction: column;
+.post-preview .date {
+  margin-bottom: 10px;
+}
+
+.post-preview .button {
+  align-self: flex-end;
+  margin-top: 15px;
+  color: #888;
+  background-color: #D2FFFC;
+}
+
+.post-preview .button:hover {
+  transition-duration: 0.3s;
+  color: #0B5553;
+  background-color: #B7FFFC;
 }
 
 .post-preview p {
   margin: 0;
-  color: #666;
+  color: #777;
 }
 
 /* ----------PAGINATION----------- */
@@ -212,16 +243,14 @@ ul.pagination .current {
 }
 
 .add-post-form div {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
-.add-post-form label {
-  display: block;
-  padding: 5px 0;
-}
 
 .add-post-form input[type='text'] {
+  height: 50px;
   width: 70%;
+  font-size: 1.4em;
   border: 2px solid #AAA;
   border-radius: 5px;
 }
@@ -235,11 +264,56 @@ ul.pagination .current {
 .post-article-button {
   align-self: flex-start;
   padding: 5px;
+  background-color: #48CFCB;
   border: 2px solid #AAA;
   border-radius: 5px;
 }
 
-/* ----------FOOTER--------------- */
+/* ----- UPDATE POST PAGE ---------- */
+
+.update-post-buttons-group {
+  display: flex;
+  gap: 15px;
+}
+
+/* -----POST DETAIL PAGE---------- */
+
+.post-detail {
+  padding: 15px;
+}
+
+.post-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-detail-header h1 {
+  font-size: 2em;
+}
+
+.post-detail-header-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.button.delete {
+  margin-top: 5px;
+  color: #804626;
+  background-color: #BF8869;
+}
+
+.button.update {
+  margin-top: 5px;
+  background-color: #AA9A4F;
+}
+
+/* -----POST DELETE PAGE---------- */
+
+.post-confirm-delete-title {
+  font-size: 1.3em;
+  color: #BF8869;
+}
 
 /* ----------FOOTER--------------- */
 
