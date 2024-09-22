@@ -19,7 +19,9 @@ account_patterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
+
 urlpatterns = [
     path('posts/', include(posts_patterns)),
-    path('accounts/', include(account_patterns))
+    path('accounts/', include(account_patterns)),
+    path('feed/', views.FeedView.as_view(), name='feed_page'),
 ]

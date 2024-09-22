@@ -12,7 +12,7 @@ from .forms import AddPostForm
 
 class PostsView(ListView):
     queryset = Posts.objects.order_by('-date_created')
-    template_name = 'blog/posts.html'
+    template_name = 'blog/user_posts.html'
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
@@ -47,4 +47,7 @@ class DeletePostView(DeleteView):
             return redirect(reverse('blog:post_detail', kwargs={"pk": self.get_object().pk}))
         return super().post(request, *args, **kwargs)
 
-# Auth views
+
+class FeedView(ListView):
+    template_name = 'blog/feed_page.html'
+    model = Posts

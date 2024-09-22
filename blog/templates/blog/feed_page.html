@@ -1,0 +1,7 @@
+{% extends 'blog/base.html' %}
+{% block title %} Лента публикаций {% endblock %}
+
+{% block content %}
+{% include 'blog/posts.html' %}
+{% include 'blog/pagination.html' %}
+{% endblock %}

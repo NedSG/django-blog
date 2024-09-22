@@ -1,0 +1,15 @@
+<ul class="pagination">
+{% for n in paginator_range %}
+    {% if page_obj.number == n %}
+        <li class="page-item active">
+            <a>{{ n }}</a>
+        </li>
+    {% else %}
+        {% if n == paginator.ELLIPSIS %}
+        <li class="page-item"><span class="page-link">{{ paginator.ELLIPSIS }}</span></li>
+        {% else %}
+        <li class="page-item"><a href="?page={{ n }}" class="page-link">{{ n }}</a></li>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>

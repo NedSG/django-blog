@@ -1,44 +1,22 @@
-{% extends 'blog/base.html' %}
 {% load static %}
-{% block content %}
-<header class="my-posts-header">
-    <h1>Мои записи</h1>
-    <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
-</header>
 {% if object_list %}
-{% for post in object_list %}
-<article class="post-preview">
-    <a href="{% url 'blog:post_detail' post.id %}">
-        <h2>{{ post.title }}</h2>
-    </a>
-    <p class="date">
-        {{ post.timesince }}
-    </p>
-    <p>{{ post.content|linebreaks|truncatewords:50 }}</p>
-    <a href="{% url 'blog:post_detail' post.id %}" class="button">Читать далее</a>
-</article>
-{% endfor %}
-<ul class="pagination">
-{% for n in paginator_range %}
-    {% if page_obj.number == n %}
-        <li class="page-item active">
-            <a>{{ n }}</a>
-        </li>
-    {% else %}
-        {% if n == paginator.ELLIPSIS %}
-        <li class="page-item"><span class="page-link">{{ paginator.ELLIPSIS }}</span></li>
-        {% else %}
-        <li class="page-item"><a href="?page={{ n }}" class="page-link">{{ n }}</a></li>
-        {% endif %}
-    {% endif %}
-{% endfor %}
-</ul>
+    {% for post in object_list %}
+    <article class="post-preview">
+        <a href="{% url 'blog:post_detail' post.id %}">
+            <h2>{{ post.title }}</h2>
+        </a>
+        <p class="date">
+            {{ post.timesince }}
+        </p>
+        <p>{{ post.content|linebreaks|truncatewords:50 }}</p>
+        <a href="{% url 'blog:post_detail' post.id %}" class="button">Читать далее</a>
+    </article>
+    {% endfor %}
 {% else %}
-<section class="main-empty">
-    <p>Пока нет ни одной записи.. Может пора что-нибудь написать?</p>
-    <a href="{% url 'blog:add_post' %}" class="to-post-create">
-        <img src="{% static 'blog/images/plus.png' %}" alt="Создать">
-    </a>
-</section>
+    <section class="main-empty">
+        <p>Пока нет ни одной записи... Самое время что-нибудь написать!</p>
+        <a href="{% url 'blog:add_post' %}" class="to-post-create">
+            <img src="{% static 'blog/images/plus.png' %}" alt="Создать">
+        </a>
+    </section>
 {% endif %}
-{% endblock content %}

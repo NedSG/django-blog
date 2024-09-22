@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<header class="my-posts-header">
+    <h1>Мои записи</h1>
+    <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
+</header>
+{% include 'blog/posts.html' %}
+{% include 'blog/pagination.html' %}
+{% endblock content %}

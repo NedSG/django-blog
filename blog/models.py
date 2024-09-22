@@ -2,15 +2,18 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
+
 from django.utils import timezone, dateformat
-from datetime import timedelta
 from django.template.defaultfilters import timesince
+from datetime import timedelta
 
 
 class Posts(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now_add=True)
 #    pub_date = models.DateTimeField(null=True)
