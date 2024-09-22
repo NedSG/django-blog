@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My blog</title>
+    <title>{% block title %}My blog{% endblock %}</title>
     <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -25,7 +25,20 @@
                 <li><a href="">Лента</a></li>
                 <li><a href="{% url 'blog:posts_list' %}">Мои записи</a></li>
             </ul>
-            <a href="{% url 'blog:posts_list' %}" class="profile-button">Профиль</a>
+
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'blog:posts_list' %}" class="profile-button">Профиль</a></li>
+                    <li>
+                        <form action="{% url 'blog:logout' %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Выйти" class="logout-button">
+                        </form>
+                    </li>
+                {% else %}
+                    <a href="{% url 'blog:login' %}" class="profile-button">Войти</a>
+                {% endif %}
+            </ul>
         </nav>
         {% endblock header %}
     </header>

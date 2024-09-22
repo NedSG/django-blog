@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.forms import AuthenticationForm
 
 from.models import Posts
 
@@ -16,3 +17,16 @@ class AddPostForm(forms.ModelForm):
                 "rows": "20",
             }),
         }
+
+
+# Auth forms
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": _("Имя пользователя")}),
+        label='',
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": _("Пароль")}),
+        label='',
+    )

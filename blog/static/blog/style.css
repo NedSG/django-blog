@@ -96,7 +96,23 @@ ul {
 
 .profile-button {
   margin: 0;
-  padding: 10px 15px 3px;
+  padding: 10px 0 3px;
+}
+
+.header-nav :last-child {
+  justify-self: end;
+}
+
+.logout-button {
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  border: none;
+}
+
+.logout-button:hover {
+  transition-duration: 0.2s;
+  color: #3ad6d1;
 }
 
 /* ----------MAIN--------------- */

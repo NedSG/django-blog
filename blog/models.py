@@ -29,7 +29,6 @@ class Posts(models.Model):
 
     def timesince(self):
         diff = timezone.now() - self.date_created
-        format = ''
         if diff < timedelta(days=365):
             if diff > timedelta(days=7):
                 format = 'd M в H:i'

@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
+
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy, reverse
+
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 
 from .models import Posts
 from .forms import AddPostForm
@@ -43,3 +46,5 @@ class DeletePostView(DeleteView):
         if 'back' in request.POST:
             return redirect(reverse('blog:post_detail', kwargs={"pk": self.get_object().pk}))
         return super().post(request, *args, **kwargs)
+
+# Auth views
