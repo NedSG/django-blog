@@ -5,18 +5,20 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login
 
 from .models import Posts
-from .forms import AddPostForm
+from .forms import AddPostForm, UserCreateForm
 
-class PostsView(ListView):
-    template_name = 'blog/user_posts.html'
+
+class FeedView(ListView):
     paginate_by = 5
+    template_name = 'blog/feed_page.html'
 
     def get_queryset(self):
-        return Posts.objects.filter(user=self.request.user.pk)
+        return Posts.objects.all()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = context['page_obj']
@@ -31,6 +33,10 @@ class PostDetailView(DetailView):
 class AddPostView(LoginRequiredMixin, CreateView):
     template_name = 'blog/add_post.html'
     form_class = AddPostForm
+
+    def form_valid(self, form):
+        
+        return super().form_valid(form)
 
 
 class UpdatePostView(UpdateView):
@@ -50,8 +56,22 @@ class DeletePostView(DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-class FeedView(PostsView):
-    template_name = 'blog/feed_page.html'
+class PostsView(LoginRequiredMixin, FeedView):
+    template_name = 'blog/user_posts.html'
 
-    # def get_queryset(self):
-    #     return Posts.objects.all()
+    def get_queryset(self):
+        return Posts.objects.filter(user=self.request.user.pk)
+
+
+# Auth views
+
+def registration_view(request):
+    if request.method == "POST":
+        form = UserCreateForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('blog:posts_list')
+    else:
+        form = UserCreateForm()
+    return render(request, 'registration/reg_page.html', {"form": form})

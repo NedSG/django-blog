@@ -17,6 +17,7 @@ posts_patterns = [
 account_patterns = [
     path('login/', auth_views.LoginView.as_view(form_class=CustomAuthenticationForm), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('registration/', views.registration_view, name='registration'),
 ]
 
 

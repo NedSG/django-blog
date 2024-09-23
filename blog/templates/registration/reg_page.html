@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="reg-page">
+    <h1>Регистрация</h1>
+    <form class="reg-form" action="{% url 'blog:registration' %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Зарегестрироваться" class="button">
+    </form>
+</div>
+{% endblock %}

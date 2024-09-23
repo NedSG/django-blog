@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
 
 from.models import Posts
 
@@ -30,3 +31,11 @@ class CustomAuthenticationForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={"placeholder": _("Пароль")}),
         label='',
     )
+
+
+class UserCreateForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserCreateForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None

@@ -338,6 +338,10 @@ ul.pagination .current {
   padding-top: 30px;
 }
 
+.login-page h1 {
+  text-align: center;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -346,7 +350,7 @@ ul.pagination .current {
   gap: 10px;
   margin: 0 auto;
   width: 40%;
-  min-width: 200px;
+  min-width: 400px;
   padding: 20px;
 }
 
@@ -365,7 +369,49 @@ ul.pagination .current {
   border: none;
 }
 
-/* ----------FOOTER--------------- */
+.registration-button {
+  margin-top: 10px;
+  font-size: 0.8em;
+  color: #999 !important;
+}
+
+/* ------ REGISTRATION PAGE ------ */
+
+.reg-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 500px;
+}
+
+.reg-form label {
+  color: #777;
+}
+
+.reg-form input {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 1.3em;
+  border: 2px #CCC ridge;
+  border-radius: 15px;
+}
+
+.reg-form input[type="submit"] {
+  align-self: center;
+  width: auto;
+  height: 70px;
+  margin-top: 30px;
+}
+
+/* --------- FOOTER -------------- */
 
 .page-footer {
   background-color: #229799;
