@@ -190,6 +190,11 @@ a.top-add-button {
   border-radius: 15px;
 }
 
+.post-title {
+  display: flex;
+  margin-bottom: 20px;
+}
+
 .post-preview .date {
   margin-bottom: 10px;
 }
@@ -247,6 +252,21 @@ ul.pagination .current {
   color: #888;
   background-color: #DDD;
   border-radius: 20%;
+}
+
+/* ---------- FEED PAGE --------------- */
+
+.feeds-avatar {
+  display: block;
+  align-self: center;
+  width: 80px;
+  height: 80px;
+  margin-right: 30px;
+}
+
+.feeds-avatar img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* ----------ADD POST PAGE--------------- */

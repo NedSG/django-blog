@@ -1,8 +1,8 @@
-{% extends 'blog/base.html' %}
-{% block content %}
+{% extends 'blog/posts.html' %}
+{% block title %} Мои записи {% endblock %}
+{% block in-header %}
 <header class="my-posts-header">
     <h1>Мои записи</h1>
     <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
 </header>
-{% include 'blog/posts.html' %}
-{% endblock content %}
+{% endblock in-header %}

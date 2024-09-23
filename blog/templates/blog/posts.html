@@ -1,11 +1,17 @@
+{% extends 'blog/base.html' %}
 {% load static %}
+{% block content %}
+{% block in-header %} {% endblock in-header %}
 {% if object_list %}
     <div class="posts-container">
         {% for post in object_list %}
         <article class="post-preview">
-            <a href="{% url 'blog:post_detail' post.id %}">
-                <h2>{{ post.title }}</h2>
-            </a>
+            <div class="post-title">
+                {% block feedtitle %} {% endblock feedtitle %}
+                <a href="{% url 'blog:post_detail' post.id %}">
+                    <h2>{{ post.title }}</h2>
+                </a>
+            </div>
             <time class="date">
                 {{ post.timesince }}
             </time>
@@ -23,3 +29,4 @@
         </a>
     </section>
 {% endif %}
+{% endblock %}

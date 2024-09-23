@@ -1,5 +1,10 @@
-{% extends 'blog/base.html' %}
+{% extends 'blog/posts.html' %}
+{% load static %}
 {% block title %} Лента публикаций {% endblock %}
-{% block content %}
-{% include 'blog/posts.html' %}
+{% block feedtitle %}
+
+<a class="feeds-avatar" href="">
+    <img src="{% static 'blog/images/avatar.png' %}" title="Аватарка">
+</a>
+
 {% endblock %}
