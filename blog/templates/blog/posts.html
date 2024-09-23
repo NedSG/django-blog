@@ -1,17 +1,20 @@
 {% load static %}
 {% if object_list %}
-    {% for post in object_list %}
-    <article class="post-preview">
-        <a href="{% url 'blog:post_detail' post.id %}">
-            <h2>{{ post.title }}</h2>
-        </a>
-        <p class="date">
-            {{ post.timesince }}
-        </p>
-        <p>{{ post.content|linebreaks|truncatewords:50 }}</p>
-        <a href="{% url 'blog:post_detail' post.id %}" class="button">Читать далее</a>
-    </article>
-    {% endfor %}
+    <div class="posts-container">
+        {% for post in object_list %}
+        <article class="post-preview">
+            <a href="{% url 'blog:post_detail' post.id %}">
+                <h2>{{ post.title }}</h2>
+            </a>
+            <time class="date">
+                {{ post.timesince }}
+            </time>
+            <p>{{ post.content|linebreaks|truncatewords:50 }}</p>
+            <a href="{% url 'blog:post_detail' post.id %}" class="button">Читать далее</a>
+        </article>
+        {% endfor %}
+    </div>
+    {% include 'blog/pagination.html' %}
 {% else %}
     <section class="main-empty">
         <p>Пока нет ни одной записи... Самое время что-нибудь написать!</p>

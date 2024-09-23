@@ -6,15 +6,17 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Posts
 from .forms import AddPostForm
 
 class PostsView(ListView):
-    queryset = Posts.objects.order_by('-date_created')
     template_name = 'blog/user_posts.html'
     paginate_by = 5
 
+    def get_queryset(self):
+        return Posts.objects.filter(user=self.request.user.pk)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page = context['page_obj']
@@ -26,7 +28,7 @@ class PostDetailView(DetailView):
     model = Posts
 
 
-class AddPostView(CreateView):
+class AddPostView(LoginRequiredMixin, CreateView):
     template_name = 'blog/add_post.html'
     form_class = AddPostForm
 
@@ -48,6 +50,8 @@ class DeletePostView(DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-class FeedView(ListView):
+class FeedView(PostsView):
     template_name = 'blog/feed_page.html'
-    model = Posts
+
+    # def get_queryset(self):
+    #     return Posts.objects.all()

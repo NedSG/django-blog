@@ -13,7 +13,7 @@ class Posts(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now_add=True)
 #    pub_date = models.DateTimeField(null=True)
