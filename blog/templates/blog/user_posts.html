@@ -2,7 +2,11 @@
 {% block title %} Мои записи {% endblock %}
 {% block in-header %}
 <header class="my-posts-header">
-    <h1>Мои записи</h1>
+    {% if view.kwargs.username == user.username %}
+    <h1>Моя страница</h1>
     <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
+    {% else %}
+    <h1>Страница пользователя <span class="username">{{ view.kwargs.username|capfirst }}</span></h1>
+    {% endif %}
 </header>
 {% endblock in-header %}

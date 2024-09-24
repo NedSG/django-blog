@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 
@@ -26,6 +28,14 @@ class FeedView(ListView):
         return context
 
 
+class PostsView(LoginRequiredMixin, FeedView):
+    template_name = 'blog/user_posts.html'
+
+    def get_queryset(self):
+        self.user_obj = get_object_or_404(User, username=self.kwargs['username'])
+        return Posts.objects.filter(user=self.user_obj)
+
+
 class PostDetailView(DetailView):
     model = Posts
 
@@ -39,28 +49,31 @@ class AddPostView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class UpdatePostView(UpdateView):
+class UpdatePostView(LoginRequiredMixin, UpdateView):
     model = Posts
     form_class = AddPostForm
     template_name = 'blog/update_post.html'
 
+    def get(self, request, *args, **kwargs):
+        if request.user != self.get_object().user:
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
-class DeletePostView(DeleteView):
+
+class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Posts
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('blog:posts_list')
+
+    def get(self, request, *args, **kwargs):
+        if request.user != self.get_object().user:
+            return HttpResponseForbidden()
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if 'back' in request.POST:
             return redirect(reverse('blog:post_detail', kwargs={"pk": self.get_object().pk}))
         return super().post(request, *args, **kwargs)
-
-
-class PostsView(LoginRequiredMixin, FeedView):
-    template_name = 'blog/user_posts.html'
-
-    def get_queryset(self):
-        return Posts.objects.filter(user=self.request.user.pk)
 
 
 # Auth views
@@ -75,3 +88,4 @@ def registration_view(request):
     else:
         form = UserCreateForm()
     return render(request, 'registration/reg_page.html', {"form": form})
+

@@ -159,17 +159,21 @@ a.to-post-create:hover {
   padding: 10px 0;
 }
 
+.my-posts-header h1 {
+  margin: 0;
+  padding-top: 15px;
+  padding-left: 30px;
+}
+
+.username {
+  color: #3D9AD1;
+}
+
 a.top-add-button {
   display: block;
   padding: 10px;
   border-radius: 8px;
   background-color: #48CFCB;
-}
-
-.my-posts-header h1 {
-  margin: 0;
-  padding-top: 15px;
-  padding-left: 30px;
 }
 
 .post-preview {

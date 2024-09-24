@@ -8,7 +8,7 @@
                 Опубликовано {{ object.timesince }}
             </time>
         </div>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and object.user == request.user %}
         <div class="post-detail-header-buttons">
             <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
             <a href="{% url 'blog:update_post' object.id %}" class="button update">Редактировать</a>
