@@ -14,6 +14,7 @@ class Posts(models.Model):
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(db_index=True, null=True)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now_add=True)
 #    pub_date = models.DateTimeField(null=True)
@@ -28,7 +29,7 @@ class Posts(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("blog:post_detail", kwargs={'pk': self.pk})
+        return reverse("blog:post_detail", kwargs={'slug': self.slug})
 
     def timesince(self):
         diff = timezone.now() - self.date_created

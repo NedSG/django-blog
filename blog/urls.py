@@ -8,11 +8,10 @@ from .forms import CustomAuthenticationForm
 app_name = 'blog'
 
 posts_patterns = [
-    path('<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('add/', views.AddPostView.as_view(), name='add_post'),
     path('delete/<int:pk>/', views.DeletePostView.as_view(), name='delete_post'),
     path('update/<int:pk>/', views.UpdatePostView.as_view(), name='update_post'),
-    path('<username>', views.PostsView.as_view(), name='posts_list'),
+    path('<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
 ]
 
 account_patterns = [
@@ -23,6 +22,7 @@ account_patterns = [
 
 
 urlpatterns = [
+    path('profile/<username>/', views.PostsView.as_view(), name='posts_list'),
     path('posts/', include(posts_patterns)),
     path('accounts/', include(account_patterns)),
     path('feed/', views.FeedView.as_view(), name='feed_page'),

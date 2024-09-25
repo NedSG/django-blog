@@ -1,6 +1,7 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.template.defaultfilters import slugify
 
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -12,6 +13,8 @@ from django.contrib.auth import login
 
 from .models import Posts
 from .forms import AddPostForm, UserCreateForm
+
+from transliterate import translit
 
 
 class FeedView(ListView):
@@ -46,6 +49,7 @@ class AddPostView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        form.instance.slug = slugify(translit(form.cleaned_data['title'], reversed=True))
         return super().form_valid(form)
 
 
@@ -63,7 +67,6 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
 class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Posts
     template_name = 'blog/delete_post.html'
-    success_url = reverse_lazy('blog:posts_list')
 
     def get(self, request, *args, **kwargs):
         if request.user != self.get_object().user:
@@ -72,9 +75,11 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
     def post(self, request, *args, **kwargs):
         if 'back' in request.POST:
-            return redirect(reverse('blog:post_detail', kwargs={"pk": self.get_object().pk}))
+            return redirect(reverse('blog:post_detail', kwargs={"slug": self.get_object().slug}))
         return super().post(request, *args, **kwargs)
 
+    def get_success_url(self):
+        return reverse_lazy('blog:posts_list', kwargs={"username": self.request.user.username})
 
 # Auth views
 
@@ -84,7 +89,7 @@ def registration_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('blog:posts_list')
+            return redirect('blog:posts_list', kwargs={"username": request.user.username})
     else:
         form = UserCreateForm()
     return render(request, 'registration/reg_page.html', {"form": form})

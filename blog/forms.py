@@ -18,6 +18,11 @@ class AddPostForm(forms.ModelForm):
                 "rows": "20",
             }),
         }
+        error_messages = {
+            "title": {
+                "unique": "Запись с таким названием уже существует."
+            }
+        }
 
 
 # Auth forms
