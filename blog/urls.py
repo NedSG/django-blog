@@ -23,6 +23,7 @@ account_patterns = [
         'password-change-success/',
         auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_success_page.html'),
         name='password_change_success'),
+    path('unauth/<username>/', views.deactivate_user_view, name='deactivate_user')
 ]
 
 

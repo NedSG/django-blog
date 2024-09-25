@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 
 from .models import Posts
@@ -101,3 +102,11 @@ class CustomPasswordChangeView(PasswordChangeView):
     form_class = CustomPasswordChangeForm
     success_url = reverse_lazy("blog:password_change_success")
 
+
+@login_required
+def deactivate_user_view(request, username):
+    if request.method == "POST":
+        user = User.objects.get(username=request.user.username)
+        user.is_active = False
+        user.save()
+        return render(request, 'registration/deactivate_user.html')

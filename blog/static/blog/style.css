@@ -38,6 +38,23 @@ ul {
   border-radius: 10px;
 }
 
+.deactivate-button {
+  width: 100%;
+
+
+}
+
+.deactivate-button button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 0 auto;
+  font: inherit;
+  color: #F8C072;
+  border: 1px solid #F8C072;
+  border-radius: 10px;
+}
+
 .date {
   color: #BBB !important;
 }

@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Пароль успешно изменён{% endblock %}
+
+{% block content %}
+<div class="pswrd-done">
+    <h1>Аккаунт деактивирован</h1>
+    <p>Надеемся Вы скоро вернётесь к нам...</p>
+    <p>Для этого <a href="{% url 'blog:registration' %}">зарегестрируйтесь</a> заново</p>
+</div>
+{% endblock %}
