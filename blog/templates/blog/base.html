@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% block extrameta %}{% endblock %}
     <title>{% block title %}My blog{% endblock %}</title>
     <!--[if IE]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -13,6 +14,7 @@
     </style>
     <link rel="stylesheet" href={% block style_link %}"{% static 'blog/style.css' %}"{% endblock %}>
     <link rel="stylesheet" href="{% static 'blog/fonts.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'blog/images/logo.png' %}"/>
 </head>
 <body>
     <header class="page-header">

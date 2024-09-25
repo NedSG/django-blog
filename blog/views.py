@@ -7,12 +7,13 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 
 from .models import Posts
-from .forms import AddPostForm, UserCreateForm
+from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm
 
 from transliterate import translit
 
@@ -89,8 +90,14 @@ def registration_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('blog:posts_list', kwargs={"username": request.user.username})
+            return redirect('blog:posts_list', username=request.user.username)
     else:
         form = UserCreateForm()
     return render(request, 'registration/reg_page.html', {"form": form})
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/password_change.html'
+    form_class = CustomPasswordChangeForm
+    success_url = reverse_lazy("blog:password_change_success")
 

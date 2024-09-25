@@ -4,7 +4,10 @@
 <header class="my-posts-header">
     {% if view.kwargs.username == user.username %}
     <h1>Моя страница</h1>
-    <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
+    <div class="profile-buttons">
+        <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
+        <a href="{% url 'blog:password_change' %}" class="button">Изменить пароль</a>
+    </div>
     {% else %}
     <h1>Страница пользователя <span class="username">{{ view.kwargs.username|capfirst }}</span></h1>
     {% endif %}

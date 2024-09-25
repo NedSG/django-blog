@@ -123,7 +123,7 @@ ul {
   min-height: 90vh;
   max-width: 1300px;
   margin: 0 auto;
-  padding: 0 5%;
+  padding: 20px 5%;
   background-color: #F1F1F1;
 }
 
@@ -155,11 +155,12 @@ a.to-post-create:hover {
 .my-posts-header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  padding: 10px 0;
+  align-items: flex-end;
+  padding: 20px 0;
 }
 
 .my-posts-header h1 {
+  align-self: flex-start;
   margin: 0;
   padding-top: 15px;
   padding-left: 30px;
@@ -167,6 +168,15 @@ a.to-post-create:hover {
 
 .username {
   color: #3D9AD1;
+}
+
+.profile-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-buttons a {
+  margin-bottom: 15px;
 }
 
 a.top-add-button {
@@ -415,6 +425,8 @@ ul.pagination .current {
 }
 
 .reg-form label {
+  display: block;
+  text-align: center;
   color: #777;
 }
 
@@ -433,6 +445,30 @@ ul.pagination .current {
   width: auto;
   height: 70px;
   margin-top: 30px;
+  background-color: #48CFCB;
+}
+
+/* ------ PASSWORD CHANGING PAGE ------ */
+
+.pswrd-change-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pswrd-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pswrd-done h1 {
+  text-align: center;
+}
+
+.pswrd-done a {
+  color: red;
 }
 
 /* --------- FOOTER -------------- */

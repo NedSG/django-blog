@@ -15,9 +15,14 @@ posts_patterns = [
 ]
 
 account_patterns = [
-    path('login/', auth_views.LoginView.as_view(form_class=CustomAuthenticationForm), name='login'),
+    path('login/', auth_views.LoginView.as_view(form_class=CustomAuthenticationForm, redirect_authenticated_user=True), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.registration_view, name='registration'),
+    path('password-change/', views.CustomPasswordChangeView.as_view(), name='password_change'),
+    path(
+        'password-change-success/',
+        auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_success_page.html'),
+        name='password_change_success'),
 ]
 
 
