@@ -6,11 +6,7 @@
     <h1>Моя страница</h1>
     <div class="profile-buttons">
         <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
-        <a href="{% url 'blog:password_change' %}" class="button">Изменить пароль</a>
-        <form action="{% url 'blog:deactivate_user' user.username %}" method="post" class="deactivate-button">
-            {% csrf_token %}
-            <button >Удалить профиль</button>
-        </form>
+        <a href="{% url 'blog:profile_settings' %}" class="button">Настройки профиля</a>
     </div>
     {% else %}
     <h1>Страница пользователя <span class="username">{{ view.kwargs.username|capfirst }}</span></h1>

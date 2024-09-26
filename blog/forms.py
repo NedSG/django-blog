@@ -56,9 +56,18 @@ class UserCreateForm(UserCreationForm):
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):
-    def __init__(self, *args, **kwargs):
-        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+    old_password = forms.CharField(label="Старый пароль", widget=forms.PasswordInput)
+    new_password1 = forms.CharField(label="Новый пароль", widget=forms.PasswordInput)
+    new_password2 = forms.CharField(label="Подтверждение", widget=forms.PasswordInput)
 
-        for fieldname in ['old_password', 'new_password1', 'new_password2']:
-            self.fields[fieldname].help_text = None
-        self.fields['new_password2'].label = "И ещё раз"
+
+class ProfileSettingsForm(forms.ModelForm):
+    email = forms.CharField(disabled=True, label="Почта")
+
+    class Meta:
+        model = get_user_model()
+        fields = ['email', 'first_name', 'last_name']
+        labels = {
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+        }

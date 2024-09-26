@@ -29,15 +29,17 @@
 
             <ul>
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'blog:posts_list' user.username %}" class="profile-button">Профиль</a></li>
-                    <li>
-                        <form action="{% url 'blog:logout' %}" method="post">
-                            {% csrf_token %}
-                            <input type="submit" value="Выйти" class="logout-button">
-                        </form>
-                    </li>
+                <li>
+                    <a href="{% url 'blog:posts_list' user.username %}" class="profile-button">Профиль | {{ user.username|capfirst }}</a>
+                </li>
+                <li>
+                    <form action="{% url 'blog:logout' %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Выйти" class="logout-button">
+                    </form>
+                </li>
                 {% else %}
-                    <a href="{% url 'blog:login' %}" class="profile-button">Войти</a>
+                <a href="{% url 'blog:login' %}" class="profile-button">Войти</a>
                 {% endif %}
             </ul>
         </nav>

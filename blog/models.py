@@ -13,8 +13,8 @@ class Posts(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    slug = models.SlugField(db_index=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    slug = models.SlugField(db_index=True, unique=True)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now_add=True)
 #    pub_date = models.DateTimeField(null=True)
@@ -49,3 +49,19 @@ class Posts(models.Model):
 #            )
 #        if self.status == "published" and self.pub_date is None:
 #            self.pub_date = timezone.now()
+
+class Comments(models.Model):
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=900)
+    date_created = models.DateTimeField(auto_now_add=True)
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['date_created']
+        indexes = [
+            models.Index(fields=['date_created'], name='IDX_comments_datecreated'),
+        ]
+
+    def __str__(self):
+        return f"{self.post}_{self.author}"

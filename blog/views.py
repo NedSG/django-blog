@@ -10,11 +10,10 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
 
 from .models import Posts
-from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm
+from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm, ProfileSettingsForm
 
 from transliterate import translit
 
@@ -102,13 +101,16 @@ def registration_view(request):
 class CustomPasswordChangeView(PasswordChangeView):
     template_name = 'registration/password_change.html'
     form_class = CustomPasswordChangeForm
-    success_url = reverse_lazy("blog:password_change_success")
+    success_url = reverse_lazy("blog:password_change_done")
 
 
-@login_required
-def deactivate_user_view(request, username):
-    if request.method == "POST":
-        user = User.objects.get(username=request.user.username)
-        user.is_active = False
-        user.save()
-        return render(request, 'registration/deactivate_user.html')
+class ProfileSettingsView(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = ProfileSettingsForm
+    template_name = 'blog/profile_settings.html'
+
+    def get_success_url(self):
+        return reverse_lazy("blog:posts_list", self.request.user.username)
+
+    def get_object(self, queryset=None):
+        return self.request.user

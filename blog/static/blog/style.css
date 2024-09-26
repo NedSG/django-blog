@@ -35,6 +35,7 @@ ul {
 .button {
   min-width: auto;
   padding: 10px 15px;
+  text-align: center;
   background-color: #48CFCB;
   border-radius: 10px;
 }
@@ -403,6 +404,12 @@ ul.pagination .current {
   text-align: center;
 }
 
+.login-page input[type="submit"] {
+  margin-top: 30px;
+  color: inherit;
+  font: inherit;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -410,15 +417,15 @@ ul.pagination .current {
   align-items: center;
   gap: 10px;
   margin: 0 auto;
-  width: 400px;
+  width: 450px;
   padding: 20px;
 }
 
 .login-form input {
-  max-width: 100%;
+  max-width: 450px;
   height: 60px;
   padding: 10px;
-  font-size: 1.3em;
+  font-size: 1.2em;
   border: 2px #CCC ridge;
   border-radius: 15px;
 }

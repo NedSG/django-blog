@@ -19,10 +19,9 @@ account_patterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.registration_view, name='registration'),
     path('password-change/', views.CustomPasswordChangeView.as_view(), name='password_change'),
-    path('password-change-success/',
+    path('password-change/done/',
         auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_success_page.html'),
-        name='password_change_success'),
-    path('unauth/<username>/', views.deactivate_user_view, name='deactivate_user'),
+        name='password_change_done'),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(
             template_name='registration/password-reset-form.html',
@@ -44,6 +43,7 @@ account_patterns = [
 
 
 urlpatterns = [
+    path('profile/settings/', views.ProfileSettingsView.as_view(), name='profile_settings'),
     path('profile/<username>/', views.PostsView.as_view(), name='posts_list'),
     path('posts/', include(posts_patterns)),
     path('accounts/', include(account_patterns)),
