@@ -19,11 +19,16 @@ account_patterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', views.registration_view, name='registration'),
     path('password-change/', views.CustomPasswordChangeView.as_view(), name='password_change'),
-    path(
-        'password-change-success/',
+    path('password-change-success/',
         auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_success_page.html'),
         name='password_change_success'),
-    path('unauth/<username>/', views.deactivate_user_view, name='deactivate_user')
+    path('unauth/<username>/', views.deactivate_user_view, name='deactivate_user'),
+    path('password-reset/',
+         auth_views.PasswordResetView.as_view(template_name='registration/password-reset-form.html'),
+         name='password_reset'),
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(template_name='registration/password-reset-done.html'),
+         name='password_reset_done')
 ]
 
 

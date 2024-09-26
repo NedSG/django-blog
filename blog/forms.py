@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from.models import Posts
 
@@ -39,11 +39,20 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class UserCreateForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
-        super(UserCreateForm, self).__init__(*args, **kwargs)
+    password1 = forms.CharField(widget=forms.PasswordInput, label="Пароль")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="Введите пароль повторно")
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'email', 'password1', 'password2']
+        help_texts = {
+            "username": None,
+        }
 
-        for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if get_user_model().filter(email=email).exists():
+            return forms.ValidationError('Пользователь с такой почтой уже существует')
+        return email
 
 
 class CustomPasswordChangeForm(PasswordChangeForm):

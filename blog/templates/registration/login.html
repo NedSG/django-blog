@@ -6,6 +6,7 @@
         {% csrf_token %}
         {{form}}
         <input type="submit" value="Войти" class="button">
+        <a class="registration-button" href="{% url 'blog:password_reset' %}">Забыли пароль?</a>
         <a class="registration-button" href="{% url 'blog:registration' %}">Регистрация</a>
     </form>
 </div>

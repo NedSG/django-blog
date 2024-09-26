@@ -132,3 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'blog:login'
 LOGIN_REDIRECT_URL = 'blog:feed_page'
 LOGOUT_REDIRECT_URL = 'blog:feed_page'
+
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "django-blog-mail@yandex.ru"
+EMAIL_HOST_PASSWORD = "wdlqmqydkgquymud"
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
