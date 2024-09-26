@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 
 from blog import views
@@ -24,11 +24,22 @@ account_patterns = [
         name='password_change_success'),
     path('unauth/<username>/', views.deactivate_user_view, name='deactivate_user'),
     path('password-reset/',
-         auth_views.PasswordResetView.as_view(template_name='registration/password-reset-form.html'),
+         auth_views.PasswordResetView.as_view(
+            template_name='registration/password-reset-form.html',
+            email_template_name='registration/password-reset-email.html',
+            success_url=reverse_lazy("blog:password_reset_done")),
          name='password_reset'),
     path('password-reset/done/',
          auth_views.PasswordResetDoneView.as_view(template_name='registration/password-reset-done.html'),
-         name='password_reset_done')
+         name='password_reset_done'),
+    path('password-reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+            template_name='registration/password-reset-confirm.html',
+            success_url=reverse_lazy("blog:password_reset_complete")),
+         name='password_reset_confirm'),
+    path('password-reset/complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='registration/password-reset-complete.html'),
+         name='password_reset_complete'),
 ]
 
 

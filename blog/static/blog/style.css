@@ -33,6 +33,7 @@ ul {
 }
 
 .button {
+  min-width: auto;
   padding: 10px 15px;
   background-color: #48CFCB;
   border-radius: 10px;
@@ -57,6 +58,11 @@ ul {
 
 .date {
   color: #BBB !important;
+}
+
+.errorlist {
+  width: auto;
+  color: Red;
 }
 
 /* -----------MAIN HEADER ------------ */
@@ -393,6 +399,10 @@ ul.pagination .current {
   text-align: center;
 }
 
+.login-page > p {
+  text-align: center;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -400,13 +410,12 @@ ul.pagination .current {
   align-items: center;
   gap: 10px;
   margin: 0 auto;
-  width: 40%;
-  min-width: 400px;
+  width: 400px;
   padding: 20px;
 }
 
 .login-form input {
-  width: 100%;
+  max-width: 100%;
   height: 60px;
   padding: 10px;
   font-size: 1.3em;
@@ -415,9 +424,14 @@ ul.pagination .current {
 }
 
 .login-form input[type="submit"] {
-  width: 50%;
+  width: auto;
   margin-top: 10px;
   border: none;
+}
+
+.login-form div {
+  display: flex;
+  flex-direction: column;
 }
 
 .registration-button {
