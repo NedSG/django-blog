@@ -1,0 +1,45 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<article class="post-detail">
+    <header class="post-detail-header">
+        <div class="post-detail-header-title-group">
+            <h1>{{ post.title }}</h1>
+            <time class="date">
+                Опубликовано {{ post.timesince }}
+            </time>
+        </div>
+        {% if user.is_authenticated and post.author == request.user %}
+        <div class="post-detail-header-buttons">
+            <a href="{% url 'blog:add_post' %}" class="button">Создать запись</a>
+            <a href="{% url 'blog:update_post' post.id %}" class="button update">Редактировать</a>
+            <a href="{% url 'blog:delete_post' post.id %}" class="button delete">Удалить запись</a>
+        {% endif %}
+        </div>
+    </header>
+    <div class="post-detail-main">
+    {{ post.content|linebreaks }}
+    </div>
+    <section class="comments">
+        <hr>
+        <h2>Комментарии</h2>
+        {% for comment in comments %}
+        <article>{{ comment.text }}</article>
+        {% empty %}
+        {% if not user.is_authenticated %}
+        <a href="{% url 'blog:login' %}">Для того, чтобы комментировать, нужно войти</a>
+        {% else %}
+        <label for="add-comment-button">Оставить комментарий</label>
+        <input type="checkbox" id="add-comment-button">
+        <div class="appear">
+            <form method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </section>
+</article>
+
+{% endblock content %}

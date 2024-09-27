@@ -3,11 +3,11 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
 
-from.models import Posts
+from.models import Post, Comment
 
 class AddPostForm(forms.ModelForm):
     class Meta:
-        model = Posts
+        model = Post
         fields = ['title', 'content']
         labels = {"title": "", "content": ""}
         widgets = {
@@ -23,6 +23,13 @@ class AddPostForm(forms.ModelForm):
                 "unique": "Запись с таким названием уже существует."
             }
         }
+
+class AddCommentForm(forms.ModelForm):
+    text = forms.CharField(label='', widget=forms.TextInput(attrs={"placeholder": "Введите текст"}))
+    parent_comment = forms.ModelChoiceField(queryset=Comment.objects.all(), widget=forms.HiddenInput, required=False)
+    class Meta:
+        model = Comment
+        fields = ['text', 'parent_comment']
 
 
 # Auth forms

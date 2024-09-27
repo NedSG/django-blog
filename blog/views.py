@@ -12,8 +12,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, get_user_model
 
-from .models import Posts
-from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm, ProfileSettingsForm
+from .models import Post, Comment
+from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm, ProfileSettingsForm, AddCommentForm
 
 from transliterate import translit
 
@@ -23,7 +23,7 @@ class FeedView(ListView):
     template_name = 'blog/feed_page.html'
 
     def get_queryset(self):
-        return Posts.objects.all()
+        return Post.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,11 +37,29 @@ class PostsView(LoginRequiredMixin, FeedView):
 
     def get_queryset(self):
         self.user_obj = get_object_or_404(User, username=self.kwargs['username'])
-        return Posts.objects.filter(user=self.user_obj)
+        return Post.objects.filter(author=self.user_obj)
 
 
 class PostDetailView(DetailView):
-    model = Posts
+    model = Post
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(author=self.request.user)
+        context['form'] = AddCommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = self.object
+            comment.author = request.user
+            comment.save()
+            return redirect('post_detail', slug=self.object.slug)
+        return render(request, self.template_name, self.get_context_data(form=form))
 
 
 class AddPostView(LoginRequiredMixin, CreateView):
@@ -55,7 +73,7 @@ class AddPostView(LoginRequiredMixin, CreateView):
 
 
 class UpdatePostView(LoginRequiredMixin, UpdateView):
-    model = Posts
+    model = Post
     form_class = AddPostForm
     template_name = 'blog/update_post.html'
 
@@ -66,7 +84,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
-    model = Posts
+    model = Post
     template_name = 'blog/delete_post.html'
 
     def get(self, request, *args, **kwargs):

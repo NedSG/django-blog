@@ -9,7 +9,7 @@ from django.template.defaultfilters import timesince
 from datetime import timedelta
 
 
-class Posts(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
@@ -50,12 +50,13 @@ class Posts(models.Model):
 #        if self.status == "published" and self.pub_date is None:
 #            self.pub_date = timezone.now()
 
-class Comments(models.Model):
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=900)
     date_created = models.DateTimeField(auto_now_add=True)
-    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE)
+    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         ordering = ['date_created']
@@ -64,4 +65,7 @@ class Comments(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.post}_{self.author}"
+        return f"{self.author}'s comment on {self.post}"
+
+    def has_parent(self):
+        return self.parent_comment is not None

@@ -382,6 +382,26 @@ ul.pagination .current {
   background-color: #AA9A4F;
 }
 
+/* -----POST COMMENTS ---------- */
+
+.comments label {
+  cursor: pointer;
+  color: #888;
+  border-bottom: 1px solid #000;
+}
+
+.comments .appear {
+  display: none;
+}
+
+.comments input[type="checkbox"] {
+  appearance: none;
+}
+
+.comments input[type="checkbox"]:checked ~ .appear {
+  display: block;
+}
+
 /* -----POST DELETE PAGE---------- */
 
 .post-confirm-delete-title {
