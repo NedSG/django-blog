@@ -19,6 +19,24 @@ from transliterate import translit
 
 
 class FeedView(ListView):
+    """
+    Представление для списка постов на общей странице постов.
+
+    Это class-based view, который возвращает список постов всех пользователей и рендереит HTML-страницу.
+
+    Template:
+        - `feed_page.html`.
+
+    Model:
+        - `Post`
+
+    Attributes:
+        - paginate_by (int): Кол-во записей на одну страницу.
+        - template_name (str): Имя шаблона, используемого для отобрежния списка постов.
+
+    Context:
+        - paginator_range (list): Список отображаемых страниц для выбора в зависимости от страницы.
+    """
     paginate_by = 5
     template_name = 'blog/feed_page.html'
 
@@ -33,6 +51,21 @@ class FeedView(ListView):
 
 
 class PostsView(FeedView):
+    """
+    Представление для постов отдельного пользователя.
+
+    Это class-based view который возвращает список постов отдельного пользователя и рендереит HTML-страницу.
+    Наследуется от `FeedView`.
+
+    Template:
+        - `user_posts.html`.
+
+    Model:
+        - `Post`.
+
+    Attributes:
+        - template_name (str): Имя шаблона, используемого для отобрежния списка постов.
+    """
     template_name = 'blog/user_posts.html'
 
     def get_queryset(self):
@@ -41,6 +74,28 @@ class PostsView(FeedView):
 
 
 class PostDetailView(DetailView):
+    """
+    Представление для отображения поста.
+
+    Это class-based view который возвращает отдельный пост с комментариями и рендерит HTML-страницу.
+
+    Template:
+        - `post_detail.html`.
+
+    Model:
+        - `Post`, `Comment`.
+
+    Form:
+        - `AddCommentForm`
+
+    Attributes:
+        - model (Post): используемая модель.
+        - context_object_name (str): Имя объекта `Post` используемое в шаблоне.
+
+    Context:
+        - comments_tree (list): Возвращает список словарей со всеми комментариями и их дочерними комментариями.
+        - form (AddCommentForm): Форма для создания комментария.
+    """
     model = Post
     context_object_name = 'post'
 
@@ -64,6 +119,25 @@ class PostDetailView(DetailView):
 
 
 class AddPostView(LoginRequiredMixin, CreateView):
+    """
+    Представление для создания поста.
+
+    Это class-based view для создания поста. Отображает форму, проверяет, чтобы пост мог создать только
+    зарегестрированный пользователь и создаёт запись в модели Post.
+
+    Template:
+        - `add_post.html`.
+
+    Model:
+        - `Post`.
+
+    Form:
+        - `AddPostForm`.
+
+    Attributes:
+        - template_name (str): Имя используемого шаблона.
+        - form_class (AddPostForm): Используемая форма.
+    """
     template_name = 'blog/add_post.html'
     form_class = AddPostForm
 
@@ -74,6 +148,26 @@ class AddPostView(LoginRequiredMixin, CreateView):
 
 
 class UpdatePostView(LoginRequiredMixin, UpdateView):
+    """
+    Представление для изменения поста.
+
+    Это class-based view для изменения поста. Отображает форму; проверяет, чтобы пост мог изменить только
+    зарегестрированный пользователь и пользователь мог изменять только свои посты; обновляет запись в модели Post.
+
+    Template:
+        - `update_post.html`.
+
+    Model:
+        - `Post`.
+
+    Form:
+        - `AddPostForm`.
+
+    Attributes:
+        - model (Post): Используемая модель.
+        - form_class (AddPostForm): Используемая форма.
+        - template_name (str): Имя используемого шаблона.
+    """
     model = Post
     form_class = AddPostForm
     template_name = 'blog/update_post.html'
@@ -85,15 +179,34 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
+    """
+    Представление для удаления поста.
+
+    Это class-based view для удаления поста. Проверяет, чтобы пост мог удалять только
+    зарегестрированный пользователь и пользователь мог удалять только свои посты;
+    отображает страницу подтверждения удаления; удаляет запись в модели Post.
+
+    Template:
+        - `delete_post.html`.
+
+    Model:
+        - `Post`.
+
+    Attributes:
+        - model (Post): Используемая модель.
+        - template_name (str): Имя используемого шаблона.
+    """
     model = Post
     template_name = 'blog/delete_post.html'
 
     def get(self, request, *args, **kwargs):
+        """Проверяет, что пост принадлежит пользователю."""
         if request.user != self.get_object().user:
             return HttpResponseForbidden()
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """Добавляет возможность вернуться на страницу отображения поста."""
         if 'back' in request.POST:
             return redirect(reverse('blog:post_detail', kwargs={"slug": self.get_object().slug}))
         return super().post(request, *args, **kwargs)
@@ -104,6 +217,24 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 # Auth views
 
 def registration_view(request):
+    """
+    Представление для регистрации пользователя.
+
+    Отображает форму для регистрации, и в случае успешной регистрации реализует вход в систему и
+    перенаправляет на страницу постов пользователя.
+
+    Template:
+        - `registration\reg_page.html`.
+
+    Model:
+        - `User`.
+
+    Form:
+        - `UserCreateForm`
+
+    Context:
+        - form (UserCreateForm): форма регистрации.
+    """
     if request.method == "POST":
         form = UserCreateForm(request.POST)
         if form.is_valid():
@@ -118,12 +249,44 @@ def registration_view(request):
 
 
 class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    """
+    Представление для смены пароля пользователя.
+
+    Позволяет пользователю менять пароль. Отображает страницу с формой для смены пароля.
+
+    Template:
+        - `registration/password_change.html`.
+
+    Model:
+        - `User`.
+
+    Attributes:
+        - template_name (str): Имя используемого шаблона.
+        - form_class (CustomPasswordChangeForm): Используемая форма.
+        - success_url (HttpResponse): Страница перенаправления, в случае успеха.
+    """
     template_name = 'registration/password_change.html'
     form_class = CustomPasswordChangeForm
     success_url = reverse_lazy("blog:password_change_done")
 
 
 class ProfileSettingsView(LoginRequiredMixin, UpdateView):
+    """
+    Представление для изменения данных о пользователе.
+
+    Позволяет пользователю задать имя, фамилию, и перейти на страницу изменения пароля.
+
+    Template:
+        - `profile_settings.html`.
+
+    Model:
+        - `User`.
+
+    Attributes:
+        - model (User):
+        - form_class (ProfileSettingsForm): Используемая форма.
+        - template_name (str): Имя используемого шаблона.
+    """
     model = get_user_model()
     form_class = ProfileSettingsForm
     template_name = 'blog/profile_settings.html'
