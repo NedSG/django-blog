@@ -9,7 +9,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Comfortaa";
+  font-family: "Comfortaa", "Open Sans", sans-serif;
   font-size: 1.3em;
   font-weight: 700;
   color: #424242;
@@ -384,14 +384,34 @@ ul.pagination .current {
 
 /* -----POST COMMENTS ---------- */
 
+.comments {
+  padding:  20px 30px;
+  border-radius: 5px;
+  background-color: #EEE;
+}
+
+.comments h2 {
+  color: #073737;
+}
+
+.comment-form-wrapper {
+  padding: 20px;
+  border: 1px solid #CCC;
+  border-radius: 5px;
+}
+
 .comments label {
   cursor: pointer;
   color: #888;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #999;
 }
 
 .comments .appear {
   display: none;
+}
+
+.comments > label {
+  display: block;
 }
 
 .comments input[type="checkbox"] {
@@ -400,6 +420,52 @@ ul.pagination .current {
 
 .comments input[type="checkbox"]:checked ~ .appear {
   display: block;
+}
+
+.comments input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.9em;
+}
+
+.comments button {
+  padding: 5px 10px;
+  margin-top: 20px;
+  font: inherit;
+  color: #333;
+  border: 1px solid #999;
+}
+
+.comments .mini-label {
+  border-bottom: none;
+  font-size: 0.7em;
+}
+
+.single-comment {
+  padding: 10px;
+}
+
+.single-comment p {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.single-comment input[type="text"] {
+  margin-top: 5px;
+  padding: 5px 10px;
+}
+
+.comment-child {
+  margin-left: 30px;
+  font-size: 0.98em;
+}
+
+.comment-child .single-comment {
+  padding: 0;
 }
 
 /* -----POST DELETE PAGE---------- */

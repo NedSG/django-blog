@@ -10,6 +10,25 @@ from datetime import timedelta
 
 
 class Post(models.Model):
+    """
+    Модель Post (Пост).
+
+    Эта модель представляет пост в блоге. Сортировка по убыванию по дате создания поста.
+
+    Using in:
+        - Views: `FeedView`, `PostsView`, `PostDetailView`, `AddPostView`, `UpdatePostView`, `DeletePostView`.
+        - Forms: `AddPostForm`.
+        - Templates: `add_post.html`, `delete_post.html`, `feed_page.html`, `post_detail.html`, `posts.html`,
+                     `update_post.html`, `user_posts.html`.
+
+    Fields:
+        - title (str): Заголовок поста.
+        - content (str): Текст поста.
+        - author (User): Автор поста.
+        - slug (str): Строка используемая для построения адреса к посту.
+        - last_modified (datetime.datetime): Дата последнего изменения поста.
+        - date_created (datetime.datetime): Дата создания поста.
+    """
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
 #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
@@ -26,12 +45,32 @@ class Post(models.Model):
         ]
 
     def __str__(self):
+        """
+        Возвращает строковое представление поста.
+
+        Returns:
+            str: Заголовок поста.
+        """
         return self.title
 
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={'slug': self.slug})
 
     def timesince(self):
+        """
+        Дата создания поста или время прошедшее с даты публикации.
+
+        Время возвращается в трёх вариантах:
+            - '1 января 2000' - если период более года.
+            - '1 января 2000 12:00' - если период менее года но более недели.
+            - '1 день|час|минуту назад' - если период менее недели.
+
+        Using in:
+            - Templates: `feed_page.html`, `user_posts.html`, `posts.html`, `post_detail.html`.
+
+        Returns:
+            str: Дата создания или период с даты создания.
+        """
         diff = timezone.now() - self.date_created
         if diff < timedelta(days=365):
             if diff > timedelta(days=7):
@@ -52,20 +91,69 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Модель Comment (Комментарий)
+
+    Представляет комментарий к посту (`Post`). Сортировка по убыванию по дате создания комментария.
+
+    Using in:
+        - Views: `PostDetailView`.
+        - Forms: `AddCommentForm`.
+        - Templates: `post_detail.html`, `comments_tree.html`, `comment_snippet.html`.
+    Fields:
+        - post (Post): Пост, к которому прикрепляется комментарий.
+        - author (User): Автор комментария.
+        - text (str): Текст комментария.
+        - date_created (datetime.datetime): Дата создания комментария.
+        - parent_comment (Comment): Указывает на комментарий, к которому сделан комментарий.
+    """
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=900)
     date_created = models.DateTimeField(auto_now_add=True)
-    parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent_comment = models.ForeignKey('self',
+                                       on_delete=models.CASCADE,
+                                       null=True, blank=True,
+                                       related_name='child_comments')
 
     class Meta:
-        ordering = ['date_created']
+        ordering = ['-date_created']
         indexes = [
-            models.Index(fields=['date_created'], name='IDX_comments_datecreated'),
+            models.Index(fields=['-date_created'], name='IDX_comments_datecreated'),
         ]
 
     def __str__(self):
-        return f"{self.author}'s comment on {self.post}"
+        return f"{self.author}'s comment on '{self.post}'"
 
-    def has_parent(self):
-        return self.parent_comment is not None
+    # def has_parent(self):
+    #     return self.parent_comment is not None
+
+    @staticmethod
+    def make_recursive_comments_list(comments, level=0):
+        """
+        Возвращает рекурсивное дерево комментариев
+
+        Возвращает список словарей, где каждый словарь содержит сам комментарий, отступ, и его дочерние комментарии.
+        Позволяет в шаблонах построить дерево сообщений.
+
+        Args:
+            comments (QuerySet): QuerySet с комментариями
+            level (int): отступ
+
+        Returns:
+            list: Список словарей с полями 'comment', 'indent' и 'child_comments'
+        """
+        def recursive_builder(comment, level):
+            result = {
+                'comment': comment,
+                'indent': level * 1,
+                'child_comments': []
+            }
+            for child in comment.child_comments.all():
+                result['child_comments'].append(recursive_builder(child, level + 1))
+            return result
+
+        tree = []
+        for comment in comments.filter(parent_comment=None):
+            tree.append(recursive_builder(comment, level))
+        return tree

@@ -3,7 +3,7 @@
 {% block title %} Лента публикаций {% endblock %}
 {% block feedtitle %}
 
-<a class="feeds-avatar" href="{% url 'blog:posts_list' user.username %}">
+<a class="feeds-avatar" href="{% url 'blog:posts_list' post.author %}">
     <img src="{% static 'blog/images/avatar.png' %}" title="Аватарка">
 </a>
 

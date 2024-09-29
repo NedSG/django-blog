@@ -1,0 +1,23 @@
+{% load blog_filters %}
+{% for comment_data in comments_tree %}
+<article class="single-comment">
+    <p>{{ comment_data.indent|mul:'&SmallCircle;'|safe }} {{ comment_data.comment.text }}</p>
+    {% if user.is_authenticated %}
+    <label for="reply-comment-button{{ comment_data.indent }}-{{ forloop.counter }}" class="mini-label">Ответить</label>
+    <input type="checkbox" id="reply-comment-button{{ comment_data.indent }}-{{ forloop.counter }}">
+    <div class="appear">
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="hidden" name="parent_comment" value="{{ comment_data.comment.id }}">
+            <button type="submit" class="button">Ответить</button>
+        </form>
+    </div>
+    {% endif %}
+</article>
+{% if comment_data.child_comments %}
+<div class="comment-child">
+    {% include 'blog/comments_tree.html' with comments_tree=comment_data.child_comments %}
+</div>
+{% endif %}
+{% endfor %}

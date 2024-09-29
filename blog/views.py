@@ -32,7 +32,7 @@ class FeedView(ListView):
         return context
 
 
-class PostsView(LoginRequiredMixin, FeedView):
+class PostsView(FeedView):
     template_name = 'blog/user_posts.html'
 
     def get_queryset(self):
@@ -46,7 +46,8 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = Comment.objects.filter(author=self.request.user)
+        comments = self.object.comments.prefetch_related('child_comments')
+        context['comments_tree'] = Comment.make_recursive_comments_list(comments)
         context['form'] = AddCommentForm()
         return context
 
@@ -58,7 +59,7 @@ class PostDetailView(DetailView):
             comment.post = self.object
             comment.author = request.user
             comment.save()
-            return redirect('post_detail', slug=self.object.slug)
+            return redirect('blog:post_detail', slug=self.object.slug)
         return render(request, self.template_name, self.get_context_data(form=form))
 
 
@@ -116,7 +117,7 @@ def registration_view(request):
     return render(request, 'registration/reg_page.html', {"form": form})
 
 
-class CustomPasswordChangeView(PasswordChangeView):
+class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     template_name = 'registration/password_change.html'
     form_class = CustomPasswordChangeForm
     success_url = reverse_lazy("blog:password_change_done")
