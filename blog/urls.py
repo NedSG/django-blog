@@ -5,6 +5,9 @@ from django.views.generic import RedirectView
 from blog import views
 from .forms import CustomAuthenticationForm
 
+# from django.conf import settings
+# from django.conf.urls.static import static
+# from django.contrib.staticfiles.views import serve
 
 app_name = 'blog'
 
@@ -51,3 +54,8 @@ urlpatterns = [
     path('accounts/', include(account_patterns)),
     path('feed/', views.FeedView.as_view(), name='feed_page'),
 ]
+
+# if not settings.DEBUG:
+#     urlpatterns += [
+#         path('static/<path:path>', serve),
+#     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
