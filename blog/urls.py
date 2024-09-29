@@ -1,5 +1,6 @@
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 
 from blog import views
 from .forms import CustomAuthenticationForm
@@ -43,6 +44,7 @@ account_patterns = [
 
 
 urlpatterns = [
+    path('', RedirectView.as_view(url=reverse_lazy('blog:feed_page'))),
     path('profile/settings/', views.ProfileSettingsView.as_view(), name='profile_settings'),
     path('profile/<username>/', views.PostsView.as_view(), name='posts_list'),
     path('posts/', include(posts_patterns)),

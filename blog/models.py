@@ -18,8 +18,8 @@ class Post(models.Model):
     Using in:
         - Views: `FeedView`, `PostsView`, `PostDetailView`, `AddPostView`, `UpdatePostView`, `DeletePostView`.
         - Forms: `AddPostForm`.
-        - Templates: `add_post.html`, `delete_post.html`, `feed_page.html`, `post_detail.html`, `posts.html`,
-                     `update_post.html`, `user_posts.html`.
+        - Templates: `blog/add_post.html`, `blog/delete_post.html`, `blog/feed_page.html`,
+         `blog/post_detail.html`, `blog/posts.html`, `blog/update_post.html`, `blog/user_posts.html`.
 
     Fields:
         - title (str): Заголовок поста.
@@ -66,7 +66,7 @@ class Post(models.Model):
             - '1 день|час|минуту назад' - если период менее недели.
 
         Using in:
-            - Templates: `feed_page.html`, `user_posts.html`, `posts.html`, `post_detail.html`.
+            - Templates: `blog/feed_page.html`, `blog/user_posts.html`, `blog/posts.html`, `blog/post_detail.html`.
 
         Returns:
             str: Дата создания или период с даты создания.
@@ -99,7 +99,7 @@ class Comment(models.Model):
     Using in:
         - Views: `PostDetailView`.
         - Forms: `AddCommentForm`.
-        - Templates: `post_detail.html`, `comments_tree.html`, `comment_snippet.html`.
+        - Templates: `blog/post_detail.html`, `blog/comments_tree.html`, `blog/comment_snippet.html`.
     Fields:
         - post (Post): Пост, к которому прикрепляется комментарий.
         - author (User): Автор комментария.
@@ -123,6 +123,8 @@ class Comment(models.Model):
         ]
 
     def __str__(self):
+        if self.parent_comment:
+            return f"{self.author}'s comment on {self.parent_comment.author}s comment with pk={self.parent_comment.pk}"
         return f"{self.author}'s comment on '{self.post}'"
 
     # def has_parent(self):

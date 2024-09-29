@@ -25,7 +25,7 @@ class FeedView(ListView):
     Это class-based view, который возвращает список постов всех пользователей и рендереит HTML-страницу.
 
     Template:
-        - `feed_page.html`.
+        - `blog/feed_page.html`.
 
     Model:
         - `Post`
@@ -58,7 +58,7 @@ class PostsView(FeedView):
     Наследуется от `FeedView`.
 
     Template:
-        - `user_posts.html`.
+        - `blog/user_posts.html`.
 
     Model:
         - `Post`.
@@ -80,7 +80,7 @@ class PostDetailView(DetailView):
     Это class-based view который возвращает отдельный пост с комментариями и рендерит HTML-страницу.
 
     Template:
-        - `post_detail.html`.
+        - `blog/post_detail.html`.
 
     Model:
         - `Post`, `Comment`.
@@ -126,7 +126,7 @@ class AddPostView(LoginRequiredMixin, CreateView):
     зарегестрированный пользователь и создаёт запись в модели Post.
 
     Template:
-        - `add_post.html`.
+        - `blog/add_post.html`.
 
     Model:
         - `Post`.
@@ -155,7 +155,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
     зарегестрированный пользователь и пользователь мог изменять только свои посты; обновляет запись в модели Post.
 
     Template:
-        - `update_post.html`.
+        - `blog/update_post.html`.
 
     Model:
         - `Post`.
@@ -187,7 +187,7 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
     отображает страницу подтверждения удаления; удаляет запись в модели Post.
 
     Template:
-        - `delete_post.html`.
+        - `blog/delete_post.html`.
 
     Model:
         - `Post`.
@@ -277,7 +277,7 @@ class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     Позволяет пользователю задать имя, фамилию, и перейти на страницу изменения пароля.
 
     Template:
-        - `profile_settings.html`.
+        - `blog/profile_settings.html`.
 
     Model:
         - `User`.
