@@ -5,8 +5,10 @@ FROM python:${PYTHON_VERSION}-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV HOME=/app
+ENV APP_HOME=/app/blog
 
-WORKDIR /app
+WORKDIR $HOME
 
 ARG UID=10001
 RUN adduser \
@@ -27,8 +29,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
-COPY . .
+COPY ./entrypoint.sh $HOME
+RUN chmod +x $HOME/entrypoint.sh
+COPY . $HOME
+
+RUN mkdir $HOME/static
+
+RUN chown -R appuser $HOME
 
 USER appuser
 
-CMD ["python", "manage.py", "runserver", "127.0.0.1:8000"]
+ENTRYPOINT ["/app/entrypoint.sh"]
