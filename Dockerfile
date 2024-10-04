@@ -33,8 +33,6 @@ COPY ./entrypoint.sh $HOME
 RUN chmod +x $HOME/entrypoint.sh
 COPY . $HOME
 
-RUN mkdir $HOME/static
-
 RUN chown -R appuser $HOME
 
 USER appuser

@@ -1,12 +1,10 @@
-from django.core.exceptions import ValidationError
-from django.db import models
-from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
-
-from django.utils import timezone, dateformat
-from django.template.defaultfilters import timesince
 from datetime import timedelta
+
+from django.contrib.auth.models import User
+from django.db import models
+from django.template.defaultfilters import timesince
+from django.urls import reverse
+from django.utils import timezone, dateformat
 
 
 class Post(models.Model):
@@ -31,12 +29,13 @@ class Post(models.Model):
     """
     title = models.CharField(max_length=200, unique=True)
     content = models.TextField()
-#    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
+    #    status = models.CharField(max_length=10, default="draft", help_text="May be either 'draft' or 'published")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(db_index=True, unique=True)
     last_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now_add=True)
-#    pub_date = models.DateTimeField(null=True)
+
+    #    pub_date = models.DateTimeField(null=True)
 
     class Meta:
         verbose_name = 'Пост'
@@ -76,12 +75,13 @@ class Post(models.Model):
         diff = timezone.now() - self.date_created
         if diff < timedelta(days=365):
             if diff > timedelta(days=7):
-                format = 'd M в H:i'
+                frmt = 'd M в H:i'
             else:
                 return timesince(self.date_created, timezone.now()).split(',')[0] + ' назад'
         else:
-            format = 'd E Y'
-        return dateformat.format(self.date_created, format)
+            frmt = 'd E Y'
+        return dateformat.format(self.date_created, frmt)
+
 
 #    def clean(self):
 #        if self.status == 'draft' and self.pub_date is not None:
@@ -149,6 +149,7 @@ class Comment(models.Model):
         Returns:
             list: Список словарей с полями 'comment', 'indent' и 'child_comments'
         """
+
         def recursive_builder(comment, level):
             result = {
                 'comment': comment,

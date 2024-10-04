@@ -1,9 +1,10 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.utils.translation import gettext_lazy as _
 
-from.models import Post, Comment
+from .models import Post, Comment
+
 
 class AddPostForm(forms.ModelForm):
     """
@@ -20,6 +21,7 @@ class AddPostForm(forms.ModelForm):
         - title (str): Заголовок поста.
         - content (str): Текст поста.
     """
+
     class Meta:
         model = Post
         fields = ['title', 'content']
@@ -38,6 +40,7 @@ class AddPostForm(forms.ModelForm):
             }
         }
 
+
 class AddCommentForm(forms.ModelForm):
     """
     Форма для создания комментария.
@@ -55,6 +58,7 @@ class AddCommentForm(forms.ModelForm):
     """
     text = forms.CharField(label='', widget=forms.TextInput(attrs={"placeholder": "Введите текст"}))
     parent_comment = forms.ModelChoiceField(queryset=Comment.objects.all(), widget=forms.HiddenInput, required=False)
+
     class Meta:
         model = Comment
         fields = ['text', 'parent_comment']
@@ -104,8 +108,10 @@ class UserCreateForm(UserCreationForm):
         - password1 (str): Пароль.
         - password2 (str): Подтверждение пароля.
     """
+    email = forms.EmailField()
     password1 = forms.CharField(widget=forms.PasswordInput, label="Пароль")
     password2 = forms.CharField(widget=forms.PasswordInput, label="Введите пароль повторно")
+
     class Meta:
         model = get_user_model()
         fields = ['username', 'email', 'password1', 'password2']
@@ -115,9 +121,9 @@ class UserCreateForm(UserCreationForm):
 
     def clean_email(self):
         """Проверяет нет ли пользователя с таким же email."""
-        email = self.cleaned_data['email']
-        if get_user_model().filter(email=email).exists():
-            return forms.ValidationError('Пользователь с такой почтой уже существует')
+        email = self.cleaned_data.get('email')
+        if email and get_user_model().objects.filter(email=email).exists():
+            raise forms.ValidationError('Пользователь с такой почтой уже существует')
         return email
 
 

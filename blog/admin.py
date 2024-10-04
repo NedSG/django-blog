@@ -19,6 +19,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'date_created', 'last_modified']
     list_filter = ['author', 'date_created']
     search_fields = ['author', 'date_created']
+    list_per_page = 10
 
 
 admin.AdminSite.site_header = "Панель администрирования"

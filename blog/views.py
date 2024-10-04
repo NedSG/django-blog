@@ -1,21 +1,18 @@
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy, reverse
 from django.template.defaultfilters import slugify
-
-from django.views.generic.list import ListView
+from django.urls import reverse_lazy, reverse
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-
-from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import login, get_user_model
-
-from .models import Post, Comment
-from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm, ProfileSettingsForm, AddCommentForm
-
+from django.views.generic.list import ListView
 from transliterate import translit
+
+from .forms import AddPostForm, UserCreateForm, CustomPasswordChangeForm, ProfileSettingsForm, AddCommentForm
+from .models import Post, Comment
 
 
 class FeedView(ListView):
@@ -142,7 +139,7 @@ class AddPostView(LoginRequiredMixin, CreateView):
     form_class = AddPostForm
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.author = self.request.user
         form.instance.slug = slugify(translit(form.cleaned_data['title'], reversed=True))
         return super().form_valid(form)
 
@@ -173,7 +170,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
     template_name = 'blog/update_post.html'
 
     def get(self, request, *args, **kwargs):
-        if request.user != self.get_object().user:
+        if request.user != self.get_object().author:
             return HttpResponseForbidden()
         return super().get(request, *args, **kwargs)
 
@@ -201,7 +198,7 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         """Проверяет, что пост принадлежит пользователю."""
-        if request.user != self.get_object().user:
+        if request.user != self.get_object().author:
             return HttpResponseForbidden()
         return super().get(request, *args, **kwargs)
 
@@ -213,6 +210,7 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('blog:posts_list', kwargs={"username": self.request.user.username})
+
 
 # Auth views
 
@@ -239,7 +237,7 @@ def registration_view(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
+            user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
             return redirect('blog:posts_list', username=request.user.username)
@@ -292,7 +290,7 @@ class ProfileSettingsView(LoginRequiredMixin, UpdateView):
     template_name = 'blog/profile_settings.html'
 
     def get_success_url(self):
-        return reverse_lazy("blog:posts_list", self.request.user.username)
+        return reverse_lazy("blog:posts_list", args=(self.request.user.username,))
 
     def get_object(self, queryset=None):
         return self.request.user
