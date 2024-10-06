@@ -29,9 +29,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
+RUN mkdir $HOME/static
 COPY ./entrypoint.sh $HOME
 RUN chmod +x $HOME/entrypoint.sh
 COPY . $HOME
+
 
 RUN chown -R appuser $HOME
 
