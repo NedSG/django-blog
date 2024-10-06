@@ -1,0 +1,8 @@
+* text=auto
+
+*.yaml text eol=lf
+Dockerfile eol=lf
+*.sh text eol=lf
+
+*.png binary
+*.jpg binary
