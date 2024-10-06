@@ -32,7 +32,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN mkdir $HOME/static
 COPY ./entrypoint.sh $HOME
 RUN chmod +x $HOME/entrypoint.sh
-RUN ls -l /app/entrypoint.sh
 COPY . $HOME
 
 
