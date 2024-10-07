@@ -43,6 +43,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    develop:
+      watch:
+        - action: rebuild
+          path: .
     networks:
       - proj
 
