@@ -390,6 +390,10 @@ ul.pagination .current {
   background-color: #EEE;
 }
 
+.comments a {
+  color: #03899C;
+}
+
 .comments h2 {
   color: #073737;
 }
