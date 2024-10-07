@@ -131,9 +131,6 @@ class Comment(models.Model):
             return f"{self.author}'s comment on {self.parent_comment.author}s comment with pk={self.parent_comment.pk}"
         return f"{self.author}'s comment on '{self.post}'"
 
-    # def has_parent(self):
-    #     return self.parent_comment is not None
-
     @staticmethod
     def make_recursive_comments_list(comments, level=0):
         """
